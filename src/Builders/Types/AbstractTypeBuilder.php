@@ -3,12 +3,13 @@
 namespace FluentJsonSchema\Builders\Types;
 
 use FluentJsonSchema\Builders\TypeBuilder;
+use FluentJsonSchema\Concerns\FluentSchemaDTOAccessor;
 use FluentJsonSchema\FluentSchema;
 use FluentJsonSchema\Utility\Foreachable;
 use Illuminate\Support\Traits\Conditionable;
 use Illuminate\Support\Traits\Macroable;
 
-abstract class AbstractTypeBuilder
+abstract class AbstractTypeBuilder implements FluentSchemaDTOAccessor
 {
     use Conditionable;
     use Foreachable;
@@ -36,14 +37,14 @@ abstract class AbstractTypeBuilder
 
     public function const(mixed $value): static
     {
-        $this->fluentSchema->getInternal()->const($value);
+        $this->fluentSchema->getSchemaDTO()->const($value);
 
         return $this;
     }
 
     public function enum(array $values): static
     {
-        $this->fluentSchema->getInternal()->enum($values);
+        $this->fluentSchema->getSchemaDTO()->enum($values);
 
         return $this;
     }

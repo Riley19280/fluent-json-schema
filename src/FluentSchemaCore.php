@@ -2,46 +2,48 @@
 
 namespace FluentJsonSchema;
 
+use FluentJsonSchema\Concerns\FluentSchemaDTOAccessor;
+
 trait FluentSchemaCore
 {
     public function id(string $id): static
     {
-        $this->getInternal()->id($id);
+        $this->getSchemaDTO()->id($id);
 
         return $this;
     }
 
     public function schema(string $schema): static
     {
-        $this->getInternal()->schema($schema);
+        $this->getSchemaDTO()->schema($schema);
 
         return $this;
     }
 
     public function ref(string $ref): static
     {
-        $this->getInternal()->ref($ref);
+        $this->getSchemaDTO()->ref($ref);
 
         return $this;
     }
 
     public function anchor(string $anchor): static
     {
-        $this->getInternal()->anchor($anchor);
+        $this->getSchemaDTO()->anchor($anchor);
 
         return $this;
     }
 
     public function dynamicRef(string $dynamicRef): static
     {
-        $this->getInternal()->dynamicRef($dynamicRef);
+        $this->getSchemaDTO()->dynamicRef($dynamicRef);
 
         return $this;
     }
 
     public function dynamicAnchor(string $dynamicAnchor): static
     {
-        $this->getInternal()->dynamicAnchor($dynamicAnchor);
+        $this->getSchemaDTO()->dynamicAnchor($dynamicAnchor);
 
         return $this;
     }
@@ -53,28 +55,32 @@ trait FluentSchemaCore
      */
     public function vocabulary(array $vocabulary): static
     {
-        $this->getInternal()->vocabulary($vocabulary);
+        $this->getSchemaDTO()->vocabulary($vocabulary);
 
         return $this;
     }
 
     public function comment(string $comment): static
     {
-        $this->getInternal()->comment($comment);
+        $this->getSchemaDTO()->comment($comment);
 
         return $this;
     }
 
     public function defs(array $defs): static
     {
-        $this->getInternal()->defs($defs);
+        $this->getSchemaDTO()->defs($defs);
 
         return $this;
     }
 
-    public function def(string $name, FluentSchema $def): static
+    public function def(string $name, FluentSchemaDTOAccessor $def): static
     {
-        $this->getInternal()->defs([...$this->getInternal()->defs ?? [], $name => $def]);
+        if (!$def instanceof FluentSchema) {
+            $def = $def->return();
+        }
+
+        $this->getSchemaDTO()->defs([...$this->getSchemaDTO()->defs ?? [], $name => $def]);
 
         return $this;
     }

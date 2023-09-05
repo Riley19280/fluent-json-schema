@@ -2,32 +2,42 @@
 
 namespace FluentJsonSchema\Builders;
 
+use FluentJsonSchema\Concerns\FluentSchemaDTOAccessor;
 use FluentJsonSchema\FluentSchema;
 
-class ContentBuilder
+class ContentBuilder implements FluentSchemaDTOAccessor
 {
     public function __construct(
         protected FluentSchema $fluentSchema,
     ) {
     }
 
+    public function return(): FluentSchema
+    {
+        return $this->fluentSchema;
+    }
+
     public function encoding(string $contentEncoding): FluentSchema
     {
-        $this->fluentSchema->getInternal()->contentEncoding($contentEncoding);
+        $this->fluentSchema->getSchemaDTO()->contentEncoding($contentEncoding);
 
         return $this->fluentSchema;
     }
 
     public function mediaType(string $contentMediaType): FluentSchema
     {
-        $this->fluentSchema->getInternal()->contentMediaType($contentMediaType);
+        $this->fluentSchema->getSchemaDTO()->contentMediaType($contentMediaType);
 
         return $this->fluentSchema;
     }
 
-    public function schema(FluentSchema $contentSchema): FluentSchema
+    public function schema(FluentSchemaDTOAccessor $contentSchema): FluentSchema
     {
-        $this->fluentSchema->getInternal()->contentSchema($contentSchema);
+        if (!$contentSchema instanceof FluentSchema) {
+            $contentSchema = $contentSchema->return();
+        }
+
+        $this->fluentSchema->getSchemaDTO()->contentSchema($contentSchema);
 
         return $this->fluentSchema;
     }

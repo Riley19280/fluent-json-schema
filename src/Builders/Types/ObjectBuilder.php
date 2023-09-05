@@ -3,25 +3,26 @@
 namespace FluentJsonSchema\Builders\Types;
 
 use FluentJsonSchema\Builders\FormatBuilder;
+use FluentJsonSchema\Concerns\FluentSchemaDTOAccessor;
 use FluentJsonSchema\FluentSchema;
 
 class ObjectBuilder extends AbstractTypeBuilder
 {
     public function format(): FormatBuilder
     {
-        return new FormatBuilder($this->fluentSchema, $this);
+        return new FormatBuilder($this->fluentSchema);
     }
 
     public function maxProperties(int $maxProperties): static
     {
-        $this->fluentSchema->getInternal()->maxProperties($maxProperties);
+        $this->fluentSchema->getSchemaDTO()->maxProperties($maxProperties);
 
         return $this;
     }
 
     public function minProperties(int $minProperties): static
     {
-        $this->fluentSchema->getInternal()->minProperties($minProperties);
+        $this->fluentSchema->getSchemaDTO()->minProperties($minProperties);
 
         return $this;
     }
@@ -33,7 +34,7 @@ class ObjectBuilder extends AbstractTypeBuilder
      */
     public function required(array $required): static
     {
-        $this->fluentSchema->getInternal()->required($required);
+        $this->fluentSchema->getSchemaDTO()->required($required);
 
         return $this;
     }
@@ -45,21 +46,29 @@ class ObjectBuilder extends AbstractTypeBuilder
      */
     public function dependentRequired(array $dependentRequired): static
     {
-        $this->fluentSchema->getInternal()->dependentRequired($dependentRequired);
+        $this->fluentSchema->getSchemaDTO()->dependentRequired($dependentRequired);
 
         return $this;
     }
 
-    public function unevaluatedProperties(FluentSchema $unevaluatedProperties): static
+    public function unevaluatedProperties(FluentSchemaDTOAccessor $unevaluatedProperties): static
     {
-        $this->fluentSchema->getInternal()->unevaluatedProperties($unevaluatedProperties);
+        if (!$unevaluatedProperties instanceof FluentSchema) {
+            $unevaluatedProperties = $unevaluatedProperties->return();
+        }
+
+        $this->fluentSchema->getSchemaDTO()->unevaluatedProperties($unevaluatedProperties);
 
         return $this;
     }
 
-    public function additionalProperties(FluentSchema $additionalProperties): static
+    public function additionalProperties(FluentSchemaDTOAccessor $additionalProperties): static
     {
-        $this->fluentSchema->getInternal()->additionalProperties($additionalProperties);
+        if (!$additionalProperties instanceof FluentSchema) {
+            $additionalProperties = $additionalProperties->return();
+        }
+
+        $this->fluentSchema->getSchemaDTO()->additionalProperties($additionalProperties);
 
         return $this;
     }
@@ -71,14 +80,18 @@ class ObjectBuilder extends AbstractTypeBuilder
      */
     public function properties(array $properties): static
     {
-        $this->fluentSchema->getInternal()->properties([...$this->fluentSchema->getInternal()->properties ?? [], ...$properties]);
+        $this->fluentSchema->getSchemaDTO()->properties([...$this->fluentSchema->getSchemaDTO()->properties ?? [], ...$properties]);
 
         return $this;
     }
 
-    public function property(string $name, FluentSchema $property): static
+    public function property(string $name, FluentSchemaDTOAccessor $property): static
     {
-        $this->fluentSchema->getInternal()->properties([...$this->fluentSchema->getInternal()->properties ?? [], $name => $property]);
+        if (!$property instanceof FluentSchema) {
+            $property = $property->return();
+        }
+
+        $this->fluentSchema->getSchemaDTO()->properties([...$this->fluentSchema->getSchemaDTO()->properties ?? [], $name => $property]);
 
         return $this;
     }
@@ -90,7 +103,7 @@ class ObjectBuilder extends AbstractTypeBuilder
      */
     public function patternProperties(array $patternProperties): static
     {
-        $this->fluentSchema->getInternal()->patternProperties($patternProperties);
+        $this->fluentSchema->getSchemaDTO()->patternProperties($patternProperties);
 
         return $this;
     }
@@ -102,14 +115,18 @@ class ObjectBuilder extends AbstractTypeBuilder
      */
     public function dependentSchemas(array $dependentSchemas): static
     {
-        $this->fluentSchema->getInternal()->dependentSchemas($dependentSchemas);
+        $this->fluentSchema->getSchemaDTO()->dependentSchemas($dependentSchemas);
 
         return $this;
     }
 
-    public function propertyNames(FluentSchema $propertyNames): static
+    public function propertyNames(FluentSchemaDTOAccessor $propertyNames): static
     {
-        $this->fluentSchema->getInternal()->propertyNames($propertyNames);
+        if (!$propertyNames instanceof FluentSchema) {
+            $propertyNames = $propertyNames->return();
+        }
+
+        $this->fluentSchema->getSchemaDTO()->propertyNames($propertyNames);
 
         return $this;
     }

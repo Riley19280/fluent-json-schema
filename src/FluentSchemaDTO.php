@@ -11,9 +11,8 @@ use FluentJsonSchema\RFC\FormatSchema;
 use FluentJsonSchema\RFC\MetadataSchema;
 use FluentJsonSchema\RFC\UnevaluatedSchema;
 use FluentJsonSchema\RFC\ValidationSchema;
-use FluentJsonSchema\Utility\FluentSchemaDTOProxy;
-
 use function FluentJsonSchema\Utility\array_order_keys;
+use FluentJsonSchema\Utility\FluentSchemaDTOProxy;
 
 class FluentSchemaDTO
 {
@@ -27,18 +26,6 @@ class FluentSchemaDTO
 
     private ?array $keyOrder;
     private FluentSchemaDTOProxy $proxy;
-
-    private static $propertyPrefixes = [
-        'id'            => '$',
-        'schema'        => '$',
-        'ref'           => '$',
-        'anchor'        => '$',
-        'dynamicRef'    => '$',
-        'dynamicAnchor' => '$',
-        'vocabulary'    => '$',
-        'comment'       => '$',
-        'defs'          => '$',
-    ];
 
     public function setProxy(FluentSchemaDTOProxy $proxy): static
     {
@@ -77,7 +64,7 @@ class FluentSchemaDTO
             ...($type ? ['type' => $type] : []),
         ];
 
-        foreach (self::$propertyPrefixes as $key => $prefix) {
+        foreach ($this->getPrefixedProperties() as $key => $prefix) {
             if (array_key_exists($key, $data)) {
                 $data["$prefix$key"] = $data[$key];
                 unset($data[$key]);
@@ -101,8 +88,8 @@ class FluentSchemaDTO
             $this->keyOrder = [];
             foreach ($this->proxy->propertySets as $setCalled) {
                 if (!in_array($setCalled, $this->keyOrder)) {
-                    if (array_key_exists($setCalled, self::$propertyPrefixes)) {
-                        $setCalled = self::$propertyPrefixes[$setCalled] . $setCalled;
+                    if (array_key_exists($setCalled, $this->getPrefixedProperties())) {
+                        $setCalled = $this->getPrefixedProperties()[$setCalled] . $setCalled;
                     }
                     $this->keyOrder[] = $setCalled;
                 }
@@ -135,5 +122,20 @@ class FluentSchemaDTO
         }
 
         return $types;
+    }
+
+    protected function getPrefixedProperties(): array
+    {
+        return [
+            'id'            => '$',
+            'schema'        => '$',
+            'ref'           => '$',
+            'anchor'        => '$',
+            'dynamicRef'    => '$',
+            'dynamicAnchor' => '$',
+            'vocabulary'    => '$',
+            'comment'       => '$',
+            'defs'          => '$',
+        ];
     }
 }

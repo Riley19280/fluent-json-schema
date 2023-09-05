@@ -8,21 +8,21 @@ class StringBuilder extends AbstractTypeBuilder
 {
     public function maxLength(int $maxLength): static
     {
-        $this->fluentSchema->getInternal()->maxLength($maxLength);
+        $this->fluentSchema->getSchemaDTO()->maxLength($maxLength);
 
         return $this;
     }
 
     public function minLength(int $minLength): static
     {
-        $this->fluentSchema->getInternal()->minLength($minLength);
+        $this->fluentSchema->getSchemaDTO()->minLength($minLength);
 
         return $this;
     }
 
     public function pattern(string $pattern): static
     {
-        $this->fluentSchema->getInternal()->pattern($pattern);
+        $this->fluentSchema->getSchemaDTO()->pattern($pattern);
 
         return $this;
     }

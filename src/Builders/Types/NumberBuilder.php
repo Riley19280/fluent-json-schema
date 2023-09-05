@@ -6,35 +6,35 @@ class NumberBuilder extends AbstractTypeBuilder
 {
     public function multipleOf(int $multipleOf): static
     {
-        $this->fluentSchema->getInternal()->multipleOf($multipleOf);
+        $this->fluentSchema->getSchemaDTO()->multipleOf($multipleOf);
 
         return $this;
     }
 
     public function maximum(int $maximum): static
     {
-        $this->fluentSchema->getInternal()->maximum($maximum);
+        $this->fluentSchema->getSchemaDTO()->maximum($maximum);
 
         return $this;
     }
 
     public function exclusiveMaximum(int $exclusiveMaximum): static
     {
-        $this->fluentSchema->getInternal()->exclusiveMaximum($exclusiveMaximum);
+        $this->fluentSchema->getSchemaDTO()->exclusiveMaximum($exclusiveMaximum);
 
         return $this;
     }
 
     public function minimum(int $minimum): static
     {
-        $this->fluentSchema->getInternal()->minimum($minimum);
+        $this->fluentSchema->getSchemaDTO()->minimum($minimum);
 
         return $this;
     }
 
     public function exclusiveMinimum(int $exclusiveMinimum): static
     {
-        $this->fluentSchema->getInternal()->exclusiveMinimum($exclusiveMinimum);
+        $this->fluentSchema->getSchemaDTO()->exclusiveMinimum($exclusiveMinimum);
 
         return $this;
     }

@@ -1,5 +1,13 @@
 <?php
 
-it('will not use debugging functions')
-    ->expect(['dd', 'dump', 'ray'])
-    ->each->not->toBeUsed();
+use FluentJsonSchema\Concerns\FluentSchemaDTOAccessor;
+
+test('will not use debugging functions', function() {
+    expect(['dd', 'dump', 'ray'])
+        ->each->not->toBeUsed();
+});
+
+test('will not pollute RFC classes', function() {
+    expect('FluentJsonSchema\RFC')
+        ->not->toUse(FluentSchemaDTOAccessor::class);
+});

@@ -3,17 +3,19 @@
 namespace FluentJsonSchema;
 
 use FluentJsonSchema\Builders\ContentBuilder;
+use FluentJsonSchema\Builders\FormatBuilder;
 use FluentJsonSchema\Builders\TypeBuilder;
 use FluentJsonSchema\Builders\Types\ArrayBuilder;
 use FluentJsonSchema\Builders\Types\NumberBuilder;
 use FluentJsonSchema\Builders\Types\ObjectBuilder;
 use FluentJsonSchema\Builders\Types\StringBuilder;
+use FluentJsonSchema\Concerns\FluentSchemaDTOAccessor;
 use FluentJsonSchema\Utility\FluentSchemaDTOProxy;
 use FluentJsonSchema\Utility\Foreachable;
 use Illuminate\Support\Traits\Conditionable;
 use Illuminate\Support\Traits\Macroable;
 
-class FluentSchema
+class FluentSchema implements FluentSchemaDTOAccessor
 {
     use Conditionable;
     use FluentSchemaComposition;
@@ -34,6 +36,14 @@ class FluentSchema
     public static function make(): static
     {
         return new static;
+    }
+
+    /**
+     * @internal
+     */
+    public function return(): FluentSchema
+    {
+        return $this;
     }
 
     /**
@@ -131,9 +141,19 @@ class FluentSchema
     }
 
     /**
+     * Set the format
+     *
+     * @return FormatBuilder
+     */
+    public function format(): FormatBuilder
+    {
+        return new FormatBuilder($this);
+    }
+
+    /**
      * @internal
      */
-    public function getInternal(): FluentSchemaDTOProxy
+    public function getSchemaDTO(): FluentSchemaDTOProxy
     {
         return $this->fluentSchemaDTO;
     }

@@ -2,6 +2,7 @@
 
 namespace FluentJsonSchema\Builders\Types;
 
+use FluentJsonSchema\Concerns\FluentSchemaDTOAccessor;
 use FluentJsonSchema\Exceptions\NonNegativeIntegerException;
 use FluentJsonSchema\FluentSchema;
 
@@ -9,21 +10,21 @@ class ArrayBuilder extends AbstractTypeBuilder
 {
     public function maxItems(int $maxItems): static
     {
-        $this->fluentSchema->getInternal()->maxItems($maxItems);
+        $this->fluentSchema->getSchemaDTO()->maxItems($maxItems);
 
         return $this;
     }
 
     public function minItems(int $minItems): static
     {
-        $this->fluentSchema->getInternal()->minItems($minItems);
+        $this->fluentSchema->getSchemaDTO()->minItems($minItems);
 
         return $this;
     }
 
     public function uniqueItems(bool $uniqueItems = true): static
     {
-        $this->fluentSchema->getInternal()->uniqueItems($uniqueItems);
+        $this->fluentSchema->getSchemaDTO()->uniqueItems($uniqueItems);
 
         return $this;
     }
@@ -33,7 +34,7 @@ class ArrayBuilder extends AbstractTypeBuilder
      */
     public function maxContains(int $maxContains): static
     {
-        $this->fluentSchema->getInternal()->maxContains($maxContains);
+        $this->fluentSchema->getSchemaDTO()->maxContains($maxContains);
 
         return $this;
     }
@@ -43,14 +44,18 @@ class ArrayBuilder extends AbstractTypeBuilder
      */
     public function minContains(int $minContains): static
     {
-        $this->fluentSchema->getInternal()->minContains($minContains);
+        $this->fluentSchema->getSchemaDTO()->minContains($minContains);
 
         return $this;
     }
 
-    public function unevaluatedItems(FluentSchema $unevaluatedItems): static
+    public function unevaluatedItems(FluentSchemaDTOAccessor $unevaluatedItems): static
     {
-        $this->fluentSchema->getInternal()->unevaluatedItems($unevaluatedItems);
+        if (!$unevaluatedItems instanceof FluentSchema) {
+            $unevaluatedItems = $unevaluatedItems->return();
+        }
+
+        $this->fluentSchema->getSchemaDTO()->unevaluatedItems($unevaluatedItems);
 
         return $this;
     }
@@ -62,21 +67,29 @@ class ArrayBuilder extends AbstractTypeBuilder
      */
     public function prefixItems(array $prefixItems): static
     {
-        $this->fluentSchema->getInternal()->prefixItems($prefixItems);
+        $this->fluentSchema->getSchemaDTO()->prefixItems($prefixItems);
 
         return $this;
     }
 
-    public function items(FluentSchema $items): static
+    public function items(FluentSchemaDTOAccessor $items): static
     {
-        $this->fluentSchema->getInternal()->items($items);
+        if (!$items instanceof FluentSchema) {
+            $items = $items->return();
+        }
+
+        $this->fluentSchema->getSchemaDTO()->items($items);
 
         return $this;
     }
 
-    public function contains(FluentSchema $contains): static
+    public function contains(FluentSchemaDTOAccessor $contains): static
     {
-        $this->fluentSchema->getInternal()->contains($contains);
+        if (!$contains instanceof FluentSchema) {
+            $contains = $contains->return();
+        }
+
+        $this->fluentSchema->getSchemaDTO()->contains($contains);
 
         return $this;
     }
