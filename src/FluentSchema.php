@@ -8,6 +8,7 @@ use FluentJsonSchema\Builders\Types\ArrayBuilder;
 use FluentJsonSchema\Builders\Types\NumberBuilder;
 use FluentJsonSchema\Builders\Types\ObjectBuilder;
 use FluentJsonSchema\Builders\Types\StringBuilder;
+use FluentJsonSchema\Utility\FluentSchemaDTOProxy;
 use FluentJsonSchema\Utility\Foreachable;
 use Illuminate\Support\Traits\Conditionable;
 use Illuminate\Support\Traits\Macroable;
@@ -21,13 +22,13 @@ class FluentSchema
     use FluentSchemaCore;
     use FluentSchemaMetadata;
 
-    protected FluentSchemaDTO $fluentSchemaDTO;
+    protected FluentSchemaDTOProxy $fluentSchemaDTO;
 
     protected ?bool $evaluateTo = null;
 
     public function __construct()
     {
-        $this->fluentSchemaDTO = new FluentSchemaDTO();
+        $this->fluentSchemaDTO = new FluentSchemaDTOProxy(new FluentSchemaDTO());
     }
 
     public static function make(): static
@@ -132,7 +133,7 @@ class FluentSchema
     /**
      * @internal
      */
-    public function getInternal(): FluentSchemaDTO
+    public function getInternal(): FluentSchemaDTOProxy
     {
         return $this->fluentSchemaDTO;
     }

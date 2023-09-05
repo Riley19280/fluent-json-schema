@@ -21,7 +21,7 @@ class ArrayBuilder extends AbstractTypeBuilder
         return $this;
     }
 
-    public function uniqueItems(bool $uniqueItems): static
+    public function uniqueItems(bool $uniqueItems = true): static
     {
         $this->fluentSchema->getInternal()->uniqueItems($uniqueItems);
 

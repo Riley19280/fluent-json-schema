@@ -11,6 +11,8 @@ use FluentJsonSchema\RFC\FormatSchema;
 use FluentJsonSchema\RFC\MetadataSchema;
 use FluentJsonSchema\RFC\UnevaluatedSchema;
 use FluentJsonSchema\RFC\ValidationSchema;
+use function FluentJsonSchema\Utility\array_order_keys;
+use FluentJsonSchema\Utility\FluentSchemaDTOProxy;
 
 class FluentSchemaDTO
 {
@@ -22,7 +24,10 @@ class FluentSchemaDTO
     use UnevaluatedSchema;
     use ValidationSchema;
 
-    const propertyPrefixes = [
+    private ?array $keyOrder;
+    private FluentSchemaDTOProxy $proxy;
+
+    private static $propertyPrefixes = [
         'id'            => '$',
         'schema'        => '$',
         'ref'           => '$',
@@ -34,11 +39,35 @@ class FluentSchemaDTO
         'defs'          => '$',
     ];
 
+    public function setProxy(FluentSchemaDTOProxy $proxy): static
+    {
+        $this->proxy = $proxy;
+
+        return $this;
+    }
+
+    /**
+     * Set the order in which the json schema properties should be ordered.
+     *
+     * @param array $keyOrder
+     *
+     * @return $this
+     */
+    public function setKeyOrder(array $keyOrder): static
+    {
+        $this->keyOrder = $keyOrder;
+
+        return $this;
+    }
+
     public function toArray(): array
     {
         $data = array_filter(get_object_vars($this), function($v) {
             return $v !== null;
         });
+
+        // Unset any properties that shouldn't be there
+        unset($data['keyOrder'], $data['proxy']);
 
         $type = $this->getTypeForArray($data);
 
@@ -47,9 +76,9 @@ class FluentSchemaDTO
             ...($type ? ['type' => $type] : []),
         ];
 
-        foreach (static::propertyPrefixes as $key => $prefix) {
+        foreach (self::$propertyPrefixes as $key => $prefix) {
             if (array_key_exists($key, $data)) {
-                $data["$$key"] = $data[$key];
+                $data["$prefix$key"] = $data[$key];
                 unset($data[$key]);
             }
         }
@@ -67,15 +96,32 @@ class FluentSchemaDTO
             }
         );
 
-        return $data;
+        if (!isset($this->keyOrder)) {
+            $this->keyOrder = [];
+            foreach ($this->proxy->propertySets as $setCalled) {
+                if (!in_array($setCalled, $this->keyOrder)) {
+                    if (array_key_exists($setCalled, self::$propertyPrefixes)) {
+                        $setCalled = self::$propertyPrefixes[$setCalled] . $setCalled;
+                    }
+                    $this->keyOrder[] = $setCalled;
+                }
+            }
+        }
+
+        $sortedData = array_order_keys($data, $this->keyOrder);
+
+        return $sortedData;
     }
 
     /**
+     * Map the array of enum types to their string equivalents.
+     * If there is only one type on the object, then a string will be returned.
+     *
      * @param array $data
      *
      * @return null|string|array
      */
-    public function getTypeForArray(array $data): string|array|null
+    protected function getTypeForArray(array $data): string|array|null
     {
         if (!array_key_exists('type', $data)) {
             return null;

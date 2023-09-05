@@ -46,6 +46,11 @@ trait FluentSchemaCore
         return $this;
     }
 
+    /**
+     * @param array<string, bool> $vocabulary
+     *
+     * @return $this
+     */
     public function vocabulary(array $vocabulary): static
     {
         $this->getInternal()->vocabulary($vocabulary);
@@ -63,6 +68,13 @@ trait FluentSchemaCore
     public function defs(array $defs): static
     {
         $this->getInternal()->defs($defs);
+
+        return $this;
+    }
+
+    public function def(string $name, FluentSchema $def): static
+    {
+        $this->getInternal()->defs([...$this->getInternal()->defs ?? [], $name => $def]);
 
         return $this;
     }

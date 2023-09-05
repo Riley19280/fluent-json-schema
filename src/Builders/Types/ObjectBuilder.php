@@ -9,7 +9,7 @@ class ObjectBuilder extends AbstractTypeBuilder
 {
     public function format(): FormatBuilder
     {
-        return new FormatBuilder($this->fluentSchema);
+        return new FormatBuilder($this->fluentSchema, $this);
     }
 
     public function maxProperties(int $maxProperties): static
@@ -72,6 +72,13 @@ class ObjectBuilder extends AbstractTypeBuilder
     public function properties(array $properties): static
     {
         $this->fluentSchema->getInternal()->properties([...$this->fluentSchema->getInternal()->properties ?? [], ...$properties]);
+
+        return $this;
+    }
+
+    public function property(string $name, FluentSchema $property): static
+    {
+        $this->fluentSchema->getInternal()->properties([...$this->fluentSchema->getInternal()->properties ?? [], $name => $property]);
 
         return $this;
     }

@@ -22,7 +22,7 @@ trait CoreSchema
     public ?string $dynamicAnchor = null;
 
     /**
-     * @var null|array<string, FluentSchema>
+     * @var null|array<string, boolean>
      */
     public ?array $vocabulary = null;
 
@@ -76,7 +76,7 @@ trait CoreSchema
     }
 
     /**
-     * @param array<string, FluentSchema> $vocabulary
+     * @param array<string, boolean> $vocabulary
      *
      * @return $this
      */

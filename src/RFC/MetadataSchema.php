@@ -29,7 +29,7 @@ trait MetadataSchema
         return $this;
     }
 
-    public function default(string $default): static
+    public function default(mixed $default): static
     {
         $this->default = $default;
 

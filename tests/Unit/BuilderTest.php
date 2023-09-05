@@ -135,6 +135,10 @@ test('fluent schema core', function(string $property, array|string $expected) {
     ['defs', ['def1', 'def2']],
 ]);
 
+test('fluent schema core def', function() {
+    expect(FluentSchema::make()->def('defName', FluentSchema::make()->true())->compile())->toBe(['$defs' => ['defName' => true]]);
+});
+
 //describe('fluent schema composition', function() {
 test('if', function() {
     expect(FluentSchema::make()->if(FluentSchema::make()->type()->number()->return())->compile())->toBe(['if' => ['type' => 'number']]);
@@ -189,6 +193,10 @@ test('pattern', function() {
     expect(FluentSchema::make()->type()->string()->pattern('^[a-z]$')->return()->compile())->toBe(['type' => 'string', 'pattern' => '^[a-z]$']);
 });
 
+test('format', function() {
+    expect(FluentSchema::make()->type()->string()->format()->regex()->compile())->toBe(['type' => 'string', 'format' => 'regex']);
+});
+
 //});
 
 //describe('number builder', function() {
@@ -238,19 +246,19 @@ test('minContains', function() {
 });
 
 test('unevaluatedItems', function() {
-    expect(FluentSchema::make()->type()->array()->unevaluatedItems(FluentSchema::make()->type()->number()->return())->return()->compile())->toBe(['unevaluatedItems' => ['type' => 'number'], 'type' => 'array']);
+    expect(FluentSchema::make()->type()->array()->unevaluatedItems(FluentSchema::make()->type()->number()->return())->return()->compile())->toBe(['type' => 'array', 'unevaluatedItems' => ['type' => 'number']]);
 });
 
 test('prefixItems', function() {
-    expect(FluentSchema::make()->type()->array()->prefixItems([FluentSchema::make()->type()->number()->return()])->return()->compile())->toBe(['prefixItems' => [['type' => 'number']], 'type' => 'array']);
+    expect(FluentSchema::make()->type()->array()->prefixItems([FluentSchema::make()->type()->number()->return()])->return()->compile())->toBe(['type' => 'array', 'prefixItems' => [['type' => 'number']]]);
 });
 
 test('items', function() {
-    expect(FluentSchema::make()->type()->array()->items(FluentSchema::make()->type()->number()->return())->return()->compile())->toBe(['items' => ['type' => 'number'], 'type' => 'array']);
+    expect(FluentSchema::make()->type()->array()->items(FluentSchema::make()->type()->number()->return())->return()->compile())->toBe(['type' => 'array', 'items' => ['type' => 'number']]);
 });
 
 test('contains', function() {
-    expect(FluentSchema::make()->type()->array()->contains(FluentSchema::make()->type()->number()->return())->return()->compile())->toBe(['contains' => ['type' => 'number'], 'type' => 'array']);
+    expect(FluentSchema::make()->type()->array()->contains(FluentSchema::make()->type()->number()->return())->return()->compile())->toBe(['type' => 'array', 'contains' => ['type' => 'number']]);
 });
 
 //});
@@ -274,27 +282,31 @@ test('dependentRequired', function() {
 });
 
 test('unevaluatedProperties', function() {
-    expect(FluentSchema::make()->type()->object()->unevaluatedProperties(FluentSchema::make()->type()->number()->return())->return()->compile())->toBe(['unevaluatedProperties' => ['type' => 'number'], 'type' => 'object']);
+    expect(FluentSchema::make()->type()->object()->unevaluatedProperties(FluentSchema::make()->type()->number()->return())->return()->compile())->toBe(['type' => 'object', 'unevaluatedProperties' => ['type' => 'number']]);
 });
 
 test('additionalProperties', function() {
-    expect(FluentSchema::make()->type()->object()->additionalProperties(FluentSchema::make()->type()->number()->return())->return()->compile())->toBe(['additionalProperties' => ['type' => 'number'], 'type' => 'object']);
+    expect(FluentSchema::make()->type()->object()->additionalProperties(FluentSchema::make()->type()->number()->return())->return()->compile())->toBe(['type' => 'object', 'additionalProperties' => ['type' => 'number']]);
 });
 
 test('properties', function() {
-    expect(FluentSchema::make()->type()->object()->properties(['number' => FluentSchema::make()->type()->number()->return(), 'string' => FluentSchema::make()->type()->string()->return()])->return()->compile())->toBe(['properties' => ['number' => ['type' => 'number'], 'string' => ['type' => 'string']], 'type' => 'object']);
+    expect(FluentSchema::make()->type()->object()->properties(['number' => FluentSchema::make()->type()->number()->return(), 'string' => FluentSchema::make()->type()->string()->return()])->return()->compile())->toBe(['type' => 'object', 'properties' => ['number' => ['type' => 'number'], 'string' => ['type' => 'string']]]);
+});
+
+test('property', function() {
+    expect(FluentSchema::make()->type()->object()->property('number', FluentSchema::make()->type()->number()->return())->property('string', FluentSchema::make()->type()->string()->return())->return()->compile())->toBe(['type' => 'object', 'properties' => ['number' => ['type' => 'number'], 'string' => ['type' => 'string']]]);
 });
 
 test('patternProperties', function() {
-    expect(FluentSchema::make()->type()->object()->patternProperties(['^[a-z]$' => FluentSchema::make()->type()->number()->return()])->return()->compile())->toBe(['patternProperties' => ['^[a-z]$' => ['type' => 'number']], 'type' => 'object']);
+    expect(FluentSchema::make()->type()->object()->patternProperties(['^[a-z]$' => FluentSchema::make()->type()->number()->return()])->return()->compile())->toBe(['type' => 'object', 'patternProperties' => ['^[a-z]$' => ['type' => 'number']]]);
 });
 
 test('dependentSchemas', function() {
-    expect(FluentSchema::make()->type()->object()->dependentSchemas(['test1' => FluentSchema::make()->type()->number()->return()])->return()->compile())->toBe(['dependentSchemas' => ['test1' => ['type' => 'number']], 'type' => 'object']);
+    expect(FluentSchema::make()->type()->object()->dependentSchemas(['test1' => FluentSchema::make()->type()->number()->return()])->return()->compile())->toBe(['type' => 'object', 'dependentSchemas' => ['test1' => ['type' => 'number']]]);
 });
 
 test('propertyNames', function() {
-    expect(FluentSchema::make()->type()->object()->propertyNames(FluentSchema::make()->type()->number()->return())->return()->compile())->toBe(['propertyNames' => ['type' => 'number'], 'type' => 'object']);
+    expect(FluentSchema::make()->type()->object()->propertyNames(FluentSchema::make()->type()->number()->return())->return()->compile())->toBe(['type' => 'object', 'propertyNames' => ['type' => 'number']]);
 });
 
 //});
@@ -356,11 +368,23 @@ test('foreach', function() {
     expect(FluentSchema::make()->type()->object()->foreach(['a', 'b', 'c'], function(ObjectBuilder $fs, string $i) {
         $fs->properties([$i => FluentSchema::make()->type()->number()]);
     })->return()->compile())->toBe([
+        'type'       => 'object',
         'properties' => [
             'a' => ['type' => 'number'],
             'b' => ['type' => 'number'],
             'c' => ['type' => 'number'],
         ],
-        'type'       => 'object',
     ]);
+});
+
+test('can override key ordering', function() {
+    $schema = FluentSchema::make()->schema('schema')->id('id');
+    $schema->getInternal()->setKeyOrder(['$id', '$schema']);
+    expect($schema->compile())->toBe(['$id' => 'id', '$schema' => 'schema']);
+});
+
+test('proxy __set', function() {
+    $schema                        = FluentSchema::make();
+    $schema->getInternal()->schema = 'schema';
+    expect($schema->compile())->toBe(['$schema' => 'schema']);
 });

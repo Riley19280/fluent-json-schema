@@ -25,21 +25,21 @@ trait FluentSchemaMetadata
         return $this;
     }
 
-    public function deprecated(bool $deprecated): static
+    public function deprecated(bool $deprecated = true): static
     {
         $this->getInternal()->deprecated($deprecated);
 
         return $this;
     }
 
-    public function readOnly(bool $readOnly): static
+    public function readOnly(bool $readOnly = true): static
     {
         $this->getInternal()->readOnly($readOnly);
 
         return $this;
     }
 
-    public function writeOnly(bool $writeOnly): static
+    public function writeOnly(bool $writeOnly = true): static
     {
         $this->getInternal()->writeOnly($writeOnly);
 

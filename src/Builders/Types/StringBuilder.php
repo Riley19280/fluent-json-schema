@@ -2,6 +2,8 @@
 
 namespace FluentJsonSchema\Builders\Types;
 
+use FluentJsonSchema\Builders\FormatBuilder;
+
 class StringBuilder extends AbstractTypeBuilder
 {
     public function maxLength(int $maxLength): static
@@ -23,5 +25,10 @@ class StringBuilder extends AbstractTypeBuilder
         $this->fluentSchema->getInternal()->pattern($pattern);
 
         return $this;
+    }
+
+    public function format(): FormatBuilder
+    {
+        return new FormatBuilder($this->fluentSchema);
     }
 }
