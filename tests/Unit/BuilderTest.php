@@ -411,7 +411,7 @@ describe('builder dto access', function() {
         expect($schema->getSchemaDTO()->$function)->toBeInstanceOf(FluentSchema::class);
     })->with(['unevaluatedProperties', 'additionalProperties', 'propertyNames']);
 
-    test('ObjectBuilder dto accessproperty', function() {
+    test('ObjectBuilder dto access property', function() {
         $schema = FluentSchema::make()->type()->object()->property('test', FluentSchema::make()->type()->object())->return();
 
         expect($schema->getSchemaDTO()->properties)->toHaveCount(1)->each->toBeInstanceOf(FluentSchema::class);

@@ -15,6 +15,7 @@ use FluentJsonSchema\Utility\Foreachable;
 use Illuminate\Support\Traits\Conditionable;
 use Illuminate\Support\Traits\Macroable;
 
+/** @phpstan-consistent-constructor */
 class FluentSchema implements FluentSchemaDTOAccessor
 {
     use Conditionable;

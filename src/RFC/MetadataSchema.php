@@ -36,21 +36,21 @@ trait MetadataSchema
         return $this;
     }
 
-    public function deprecated(string $deprecated): static
+    public function deprecated(bool $deprecated): static
     {
         $this->deprecated = $deprecated;
 
         return $this;
     }
 
-    public function readOnly(string $readOnly): static
+    public function readOnly(bool $readOnly): static
     {
         $this->readOnly = $readOnly;
 
         return $this;
     }
 
-    public function writeOnly(string $writeOnly): static
+    public function writeOnly(bool $writeOnly): static
     {
         $this->writeOnly = $writeOnly;
 

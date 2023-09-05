@@ -105,7 +105,7 @@ test('e2e Applicator vocabulary meta-schema', function() {
         ->property('patternProperties', FluentSchema::make()
             ->type()->object()
             ->additionalProperties(FluentSchema::make()->dynamicRef('#meta'))
-            ->propertyNames(FluentSchema::make()->object()->format()->regex())
+            ->propertyNames(FluentSchema::make()->format()->regex())
             ->return()
             ->default([])
         )

@@ -6,7 +6,7 @@ trait Foreachable
 {
     /**
      * @param iterable                                      $items
-     * @param callable(static $this, mixed ...$args): mixed $handler
+     * @param callable(static $self, mixed ...$args): mixed $handler
      * @param                                               ...$args
      *
      * @return $this
