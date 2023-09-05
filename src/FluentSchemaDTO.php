@@ -11,8 +11,9 @@ use FluentJsonSchema\RFC\FormatSchema;
 use FluentJsonSchema\RFC\MetadataSchema;
 use FluentJsonSchema\RFC\UnevaluatedSchema;
 use FluentJsonSchema\RFC\ValidationSchema;
-use function FluentJsonSchema\Utility\array_order_keys;
 use FluentJsonSchema\Utility\FluentSchemaDTOProxy;
+
+use function FluentJsonSchema\Utility\array_order_keys;
 
 class FluentSchemaDTO
 {
