@@ -16,11 +16,11 @@ use Illuminate\Support\Traits\Macroable;
 class FluentSchema
 {
     use Conditionable;
-    use Macroable;
-    use Foreachable;
     use FluentSchemaComposition;
     use FluentSchemaCore;
     use FluentSchemaMetadata;
+    use Foreachable;
+    use Macroable;
 
     protected FluentSchemaDTOProxy $fluentSchemaDTO;
 

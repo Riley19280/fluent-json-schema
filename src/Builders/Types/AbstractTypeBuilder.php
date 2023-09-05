@@ -11,8 +11,8 @@ use Illuminate\Support\Traits\Macroable;
 abstract class AbstractTypeBuilder
 {
     use Conditionable;
-    use Macroable;
     use Foreachable;
+    use Macroable;
 
     public function __construct(
         protected FluentSchema $fluentSchema,
