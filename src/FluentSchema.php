@@ -10,10 +10,15 @@ use FluentJsonSchema\Builders\Types\NumberBuilder;
 use FluentJsonSchema\Builders\Types\ObjectBuilder;
 use FluentJsonSchema\Builders\Types\StringBuilder;
 use FluentJsonSchema\Concerns\FluentSchemaDTOAccessor;
+use FluentJsonSchema\Exceptions\FluentSchemaException;
 use FluentJsonSchema\Utility\FluentSchemaDTOProxy;
 use FluentJsonSchema\Utility\Foreachable;
+use FluentJsonSchema\Utility\Tappable;
 use Illuminate\Support\Traits\Conditionable;
 use Illuminate\Support\Traits\Macroable;
+use JsonSchema\Constraints\Factory;
+use JsonSchema\SchemaStorage;
+use JsonSchema\Validator;
 
 /** @phpstan-consistent-constructor */
 class FluentSchema implements FluentSchemaDTOAccessor
@@ -23,11 +28,14 @@ class FluentSchema implements FluentSchemaDTOAccessor
     use FluentSchemaCore;
     use FluentSchemaMetadata;
     use Foreachable;
+    use Tappable;
     use Macroable;
 
     protected FluentSchemaDTOProxy $fluentSchemaDTO;
 
     protected ?bool $evaluateTo = null;
+
+    protected SchemaStorage $schemaStorage;
 
     public function __construct()
     {
@@ -157,6 +165,74 @@ class FluentSchema implements FluentSchemaDTOAccessor
     public function getSchemaDTO(): FluentSchemaDTOProxy
     {
         return $this->fluentSchemaDTO;
+    }
+
+    protected function ensureSchemaStorage(): void
+    {
+        if (!isset($this->schemaStorage)) {
+            $this->schemaStorage = new SchemaStorage();
+        }
+    }
+
+    /**
+     * Validate the json schema
+     *
+     * @see https://github.com/justinrainbow/json-schema
+     *
+     * @param array|object $data
+     * @param int|null     $checkMode
+     *
+     * @return Validator
+     */
+    public function validate(mixed &$data, int $checkMode = null): Validator
+    {
+        $this->ensureSchemaStorage();
+
+        $validator = new Validator(new Factory($this->schemaStorage));
+
+        $validator->validate($data, $this->compile(), $checkMode);
+
+        return $validator;
+    }
+
+    /**
+     * @param object|array $schema Schema to add
+     * @param string|null  $id     The id to assign to the schema, if not set in the schema itself
+     *
+     * @throws FluentSchemaException
+     *
+     * @return $this
+     */
+    public function addValidationSchema(object|array $schema, string $id = null): static
+    {
+        $this->ensureSchemaStorage();
+
+        if ($schema instanceof FluentSchema) {
+            $id     = $schema->getSchemaDTO()->id ?? $id;
+            $schema = $schema->compile();
+        }
+
+        if (!$id) {
+            throw new FluentSchemaException('Schema id was not provided');
+        }
+
+        $this->schemaStorage->addSchema($id, $schema);
+
+        return $this;
+    }
+
+    public function getSchemaStorage(): SchemaStorage
+    {
+        $this->ensureSchemaStorage();
+
+        return $this->schemaStorage;
+    }
+
+    public function setSchemaStorage(SchemaStorage $schemaStorage): static
+    {
+        $this->schemaStorage = $schemaStorage;
+
+        return $this;
     }
 
     public function compile(): bool|array

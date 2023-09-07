@@ -436,3 +436,11 @@ test('can return from builders', function(string $builder) {
 
     expect($schema)->toBeInstanceOf(FluentSchema::class);
 })->with(['array', 'number', 'object', 'string', 'content', 'format', 'type']);
+
+test('tap', function() {
+    $schema = FluentSchema::make()->tap(function(FluentSchema $schema) {
+        $schema->id('id');
+    });
+
+    expect($schema->compile())->toBe(['$id' => 'id']);
+});
