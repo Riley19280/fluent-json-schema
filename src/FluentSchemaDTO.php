@@ -12,6 +12,7 @@ use FluentJsonSchema\RFC\MetadataSchema;
 use FluentJsonSchema\RFC\UnevaluatedSchema;
 use FluentJsonSchema\RFC\ValidationSchema;
 use FluentJsonSchema\Utility\FluentSchemaDTOProxy;
+use FluentJsonSchema\Utility\UnserializedAttribute;
 
 use function FluentJsonSchema\Utility\array_order_keys;
 
@@ -25,7 +26,15 @@ class FluentSchemaDTO
     use UnevaluatedSchema;
     use ValidationSchema;
 
+    /**
+     * @var array<string, mixed>
+     */
+    #[UnserializedAttribute]
+    private array $customKeywords = [];
+
+    #[UnserializedAttribute]
     private ?array $keyOrder;
+    #[UnserializedAttribute]
     private FluentSchemaDTOProxy $proxy;
 
     public function setProxy(FluentSchemaDTOProxy $proxy): static
@@ -49,20 +58,35 @@ class FluentSchemaDTO
         return $this;
     }
 
+    public function customKeyword(string $keyword, mixed $value): static
+    {
+        $this->customKeywords[$keyword] = $value;
+
+        return $this;
+    }
+
     public function toArray(): array
     {
         $data = array_filter(get_object_vars($this), function($v) {
             return $v !== null;
         });
 
-        // Unset any properties that shouldn't be there
-        unset($data['keyOrder'], $data['proxy']);
+        $unserializedKeys = array_filter((new \ReflectionClass($this))->getProperties(), function(\ReflectionProperty $property) {
+            $attrs = $property->getAttributes(UnserializedAttribute::class);
+
+            return count($attrs) > 0;
+        });
+
+        foreach ($unserializedKeys as $key) {
+            unset($data[$key->getName()]);
+        }
 
         $type = $this->getTypeForArray($data);
 
         $data = [
             ...$data,
             ...($type ? ['type' => $type] : []),
+            ...$this->customKeywords,
         ];
 
         foreach ($this->getPrefixedProperties() as $key => $prefix) {

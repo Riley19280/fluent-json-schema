@@ -444,3 +444,20 @@ test('tap', function() {
 
     expect($schema->compile())->toBe(['$id' => 'id']);
 });
+
+test('custom keywords', function() {
+    $schema = FluentSchema::make()
+        ->id('id')
+        ->customKeyword('word1', 'test1')
+        ->schema('schema')
+        ->customKeyword('word2', 'test2')
+        ->customKeyword('word3', 'test3');
+
+    expect($schema->compile())->toBe([
+        '$id'     => 'id',
+        'word1'   => 'test1',
+        '$schema' => 'schema',
+        'word2'   => 'test2',
+        'word3'   => 'test3',
+    ]);
+});

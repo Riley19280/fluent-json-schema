@@ -24,14 +24,18 @@ class FluentSchemaDTOProxy
     {
         $this->methodCalls[] = $name;
 
-        // check if the method call is a setter
-        try {
-            $this->proxyReflection->getMethod($name);
-            $this->proxyReflection->getProperty($name);
+        if ($name === 'customKeyword') {
+            $this->propertySets[] = $arguments[0];
+        } else {
+            // check if the method call is a setter
+            try {
+                $this->proxyReflection->getMethod($name);
+                $this->proxyReflection->getProperty($name);
 
-            $this->propertySets[] = $name;
-        } catch (\ReflectionException $exception) {
+                $this->propertySets[] = $name;
+            } catch (\ReflectionException $exception) {
 
+            }
         }
 
         return $this->proxy->$name(...$arguments);

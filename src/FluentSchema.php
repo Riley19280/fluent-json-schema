@@ -174,6 +174,20 @@ class FluentSchema implements FluentSchemaDTOAccessor
         }
     }
 
+    public function getSchemaStorage(): SchemaStorage
+    {
+        $this->ensureSchemaStorage();
+
+        return $this->schemaStorage;
+    }
+
+    public function setSchemaStorage(SchemaStorage $schemaStorage): static
+    {
+        $this->schemaStorage = $schemaStorage;
+
+        return $this;
+    }
+
     /**
      * Validate the json schema
      *
@@ -221,16 +235,9 @@ class FluentSchema implements FluentSchemaDTOAccessor
         return $this;
     }
 
-    public function getSchemaStorage(): SchemaStorage
+    public function customKeyword(string $keyword, mixed $value): static
     {
-        $this->ensureSchemaStorage();
-
-        return $this->schemaStorage;
-    }
-
-    public function setSchemaStorage(SchemaStorage $schemaStorage): static
-    {
-        $this->schemaStorage = $schemaStorage;
+        $this->getSchemaDTO()->customKeyword($keyword, $value);
 
         return $this;
     }
