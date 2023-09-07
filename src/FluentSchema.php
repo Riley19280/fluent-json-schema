@@ -28,8 +28,8 @@ class FluentSchema implements FluentSchemaDTOAccessor
     use FluentSchemaCore;
     use FluentSchemaMetadata;
     use Foreachable;
-    use Tappable;
     use Macroable;
+    use Tappable;
 
     protected FluentSchemaDTOProxy $fluentSchemaDTO;
 
