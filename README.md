@@ -7,7 +7,6 @@ Create json schema with ease
 composer require riley19280/fluent-json-schema
 ```
 
-
 ## Basic Usage
 
 ```php
