@@ -9,6 +9,7 @@ use FluentJsonSchema\RFC\ContentSchema;
 use FluentJsonSchema\RFC\CoreSchema;
 use FluentJsonSchema\RFC\FormatSchema;
 use FluentJsonSchema\RFC\MetadataSchema;
+use FluentJsonSchema\RFC\MiscSchema;
 use FluentJsonSchema\RFC\UnevaluatedSchema;
 use FluentJsonSchema\RFC\ValidationSchema;
 use FluentJsonSchema\Utility\FluentSchemaDTOProxy;
@@ -23,6 +24,7 @@ class FluentSchemaDTO
     use CoreSchema;
     use FormatSchema;
     use MetadataSchema;
+    use MiscSchema;
     use UnevaluatedSchema;
     use ValidationSchema;
 

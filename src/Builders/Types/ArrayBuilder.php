@@ -72,6 +72,18 @@ class ArrayBuilder extends AbstractTypeBuilder
         return $this;
     }
 
+    /**
+     * @param FluentSchema[] $additionalItems
+     *
+     * @return $this
+     */
+    public function additionalItems(array $additionalItems): static
+    {
+        $this->fluentSchema->getSchemaDTO()->additionalItems($additionalItems);
+
+        return $this;
+    }
+
     public function items(FluentSchemaDTOAccessor $items): static
     {
         if (!$items instanceof FluentSchema) {

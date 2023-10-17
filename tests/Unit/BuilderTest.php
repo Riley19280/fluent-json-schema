@@ -290,6 +290,10 @@ describe('array builder', function() {
         expect(FluentSchema::make()->type()->array()->unevaluatedItems(FluentSchema::make()->type()->number()->return())->return()->compile())->toBe(['type' => 'array', 'unevaluatedItems' => ['type' => 'number']]);
     });
 
+    test('additionalItems', function() {
+        expect(FluentSchema::make()->type()->array()->additionalItems([FluentSchema::make()->type()->string(), FluentSchema::make()->type()->number()])->return()->compile())->toBe(['type' => 'array', 'additionalItems' => [['type' => 'string'], ['type' => 'number']]]);
+    });
+
     test('prefixItems', function() {
         expect(FluentSchema::make()->type()->array()->prefixItems([FluentSchema::make()->type()->number()->return()])->return()->compile())->toBe(['type' => 'array', 'prefixItems' => [['type' => 'number']]]);
     });
