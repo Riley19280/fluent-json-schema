@@ -3,8 +3,8 @@
     "description": "Create json schemas with ease",
     "type": "library",
     "require": {
-        "illuminate/conditionable": "^10",
-        "illuminate/macroable": "^10",
+        "illuminate/conditionable": "^10|^11",
+        "illuminate/macroable": "^10|^11",
         "justinrainbow/json-schema": "^5.2"
     },
     "require-dev": {
