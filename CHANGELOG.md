@@ -2,6 +2,27 @@
 
 All notable changes to `fluent-json-schema` will be documented in this file.
 
+## v1.2.0 - 2024-08-27
+
+### What's Changed
+
+* Require property directly from builder by @Riley19280 in https://github.com/Riley19280/fluent-json-schema/pull/18
+
+Can now call `->required()` directly from within a property declaration
+
+```php
+FluentSchema::make()
+  ->type()->object()
+  ->property('test1', FluentSchema::make()
+    ->type()->string()
+    ->required()
+  )
+
+```
+In object context, the `require` method was renamed to `requiredProperties`
+
+**Full Changelog**: https://github.com/Riley19280/fluent-json-schema/compare/v1.1.1...v1.2.0
+
 ## v1.1.1 - 2024-08-27
 
 ### What's Changed
