@@ -5,6 +5,7 @@ namespace FluentJsonSchema\Builders\Types;
 use FluentJsonSchema\Builders\FormatBuilder;
 use FluentJsonSchema\Concerns\FluentSchemaDTOAccessor;
 use FluentJsonSchema\FluentSchema;
+use FluentJsonSchema\Utility\UtilityValue;
 
 class ObjectBuilder extends AbstractTypeBuilder
 {
@@ -32,7 +33,7 @@ class ObjectBuilder extends AbstractTypeBuilder
      *
      * @return $this
      */
-    public function required(array $required): static
+    public function requiredProperties(array $required): static
     {
         $this->fluentSchema->getSchemaDTO()->required($required);
 
@@ -80,7 +81,9 @@ class ObjectBuilder extends AbstractTypeBuilder
      */
     public function properties(array $properties): static
     {
-        $this->fluentSchema->getSchemaDTO()->properties([...$this->fluentSchema->getSchemaDTO()->properties ?? [], ...$properties]);
+        foreach ($properties as $name => $property) {
+            $this->property($name, $property);
+        }
 
         return $this;
     }
@@ -89,6 +92,10 @@ class ObjectBuilder extends AbstractTypeBuilder
     {
         if (!$property instanceof FluentSchema) {
             $property = $property->return();
+        }
+
+        if ($property->getSchemaDTO()->getUtilityValue(UtilityValue::IsPropertyRequired)) {
+            $this->fluentSchema->getSchemaDTO()->required([...$this->fluentSchema->getSchemaDTO()->required ?? [], $name]);
         }
 
         $this->fluentSchema->getSchemaDTO()->properties([...$this->fluentSchema->getSchemaDTO()->properties ?? [], $name => $property]);

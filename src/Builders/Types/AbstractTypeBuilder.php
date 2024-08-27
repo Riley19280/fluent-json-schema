@@ -6,6 +6,7 @@ use FluentJsonSchema\Builders\TypeBuilder;
 use FluentJsonSchema\Concerns\FluentSchemaDTOAccessor;
 use FluentJsonSchema\FluentSchema;
 use FluentJsonSchema\Utility\Foreachable;
+use FluentJsonSchema\Utility\UtilityValue;
 use Illuminate\Support\Traits\Conditionable;
 use Illuminate\Support\Traits\Macroable;
 
@@ -44,6 +45,13 @@ abstract class AbstractTypeBuilder implements FluentSchemaDTOAccessor
     public function enum(array $values): static
     {
         $this->fluentSchema->getSchemaDTO()->enum($values);
+
+        return $this;
+    }
+
+    public function required(bool $required = true): static
+    {
+        $this->fluentSchema->getSchemaDTO()->setUtilityValue(UtilityValue::IsPropertyRequired, $required);
 
         return $this;
     }

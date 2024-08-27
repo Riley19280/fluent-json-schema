@@ -14,6 +14,7 @@ use FluentJsonSchema\RFC\UnevaluatedSchema;
 use FluentJsonSchema\RFC\ValidationSchema;
 use FluentJsonSchema\Utility\FluentSchemaDTOProxy;
 use FluentJsonSchema\Utility\UnserializedAttribute;
+use FluentJsonSchema\Utility\UtilityContainer;
 
 use function FluentJsonSchema\Utility\array_order_keys;
 
@@ -26,6 +27,7 @@ class FluentSchemaDTO
     use MetadataSchema;
     use MiscSchema;
     use UnevaluatedSchema;
+    use UtilityContainer;
     use ValidationSchema;
 
     /**
@@ -38,6 +40,9 @@ class FluentSchemaDTO
     private ?array $keyOrder;
     #[UnserializedAttribute]
     private FluentSchemaDTOProxy $proxy;
+
+    #[UnserializedAttribute]
+    private array $utilityContainer = [];
 
     public function setProxy(FluentSchemaDTOProxy $proxy): static
     {

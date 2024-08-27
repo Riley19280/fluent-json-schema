@@ -312,7 +312,7 @@ describe('array builder', function() {
 
 });
 
-describe('array builder', function() {
+describe('object builder', function() {
 
     test('maxProperties', function() {
         expect(FluentSchema::make()->type()->object()->maxProperties(10)->return()->compile())->toBe(['type' => 'object', 'maxProperties' => 10]);
@@ -323,7 +323,7 @@ describe('array builder', function() {
     });
 
     test('required', function() {
-        expect(FluentSchema::make()->type()->object()->required(['test1', 'test2'])->return()->compile())->toBe(['type' => 'object', 'required' => ['test1', 'test2']]);
+        expect(FluentSchema::make()->type()->object()->requiredProperties(['test1', 'test2'])->return()->compile())->toBe(['type' => 'object', 'required' => ['test1', 'test2']]);
     });
 
     test('dependentRequired', function() {
@@ -358,6 +358,10 @@ describe('array builder', function() {
         expect(FluentSchema::make()->type()->object()->propertyNames(FluentSchema::make()->type()->number()->return())->return()->compile())->toBe(['type' => 'object', 'propertyNames' => ['type' => 'number']]);
     });
 
+});
+
+test('can require object properties directly', function() {
+    expect(FluentSchema::make()->type()->object()->property('test1', FluentSchema::make()->type()->string()->required())->return()->compile())->toBe(['type' => 'object', 'required' => ['test1'], 'properties' => ['test1' => ['type' => 'string']]]);
 });
 
 test('array builder restricted values', function(string $method) {
