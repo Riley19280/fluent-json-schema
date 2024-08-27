@@ -13,6 +13,6 @@ trait UtilityContainer
 
     public function getUtilityValue(UtilityValue $name): mixed
     {
-        return $this->utilityContainer[$name->name];
+        return $this->utilityContainer[$name->name] ?? null;
     }
 }
