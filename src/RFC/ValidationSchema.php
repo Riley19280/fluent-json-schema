@@ -50,7 +50,9 @@ trait ValidationSchema
     public function type(JsonSchemaType $type): static
     {
         if (is_array($this->type)) {
-            $this->type[] = $type;
+            if (count(array_filter($this->type, fn(JsonSchemaType $t) => $t == $type)) === 0) {
+                $this->type[] = $type;
+            }
         } else {
             $this->type = [$type];
         }

@@ -74,6 +74,10 @@ describe('types', function() {
         expect(FluentSchema::make()->type()->boolean()->type()->null()->type()->array()->type()->number()->return()->compile())->toBe(['type' => ['boolean', 'null', 'array', 'number']]);
     });
 
+    test('types get deduplicated', function() {
+        expect(FluentSchema::make()->type()->string()->type()->string()->return()->compile())->toBe(['type' => 'string']);
+    });
+
     test('type from string', function($type) {
         $builder = FluentSchema::make()->type()->fromString($type);
 
