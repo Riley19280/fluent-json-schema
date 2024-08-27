@@ -2,6 +2,12 @@
 
 All notable changes to `fluent-json-schema` will be documented in this file.
 
+## v1.2.1 - 2024-08-27
+
+- Fix test runner false positives
+- Fix `required` function
+  **Full Changelog**: https://github.com/Riley19280/fluent-json-schema/compare/v1.2.0...v1.2.1
+
 ## v1.2.0 - 2024-08-27
 
 ### What's Changed
@@ -17,6 +23,7 @@ FluentSchema::make()
     ->type()->string()
     ->required()
   )
+
 
 ```
 In object context, the `require` method was renamed to `requiredProperties`
