@@ -2,6 +2,19 @@
 
 All notable changes to `fluent-json-schema` will be documented in this file.
 
+## v1.1.1 - 2024-08-27
+
+### What's Changed
+
+* Bump dependabot/fetch-metadata from 1.6.0 to 2.2.0 by @dependabot in https://github.com/Riley19280/fluent-json-schema/pull/15
+* Deduplicate types by @Riley19280 in https://github.com/Riley19280/fluent-json-schema/pull/17
+
+### New Contributors
+
+* @Riley19280 made their first contribution in https://github.com/Riley19280/fluent-json-schema/pull/17
+
+**Full Changelog**: https://github.com/Riley19280/fluent-json-schema/compare/v1.1.0...v1.1.1
+
 ## v1.1.0 - 2024-05-29
 
 ### What's Changed
