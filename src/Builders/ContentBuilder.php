@@ -9,8 +9,7 @@ class ContentBuilder implements FluentSchemaDTOAccessor
 {
     public function __construct(
         protected FluentSchema $fluentSchema,
-    ) {
-    }
+    ) {}
 
     public function return(): FluentSchema
     {

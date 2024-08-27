@@ -39,7 +39,7 @@ class FluentSchema implements FluentSchemaDTOAccessor
 
     public function __construct()
     {
-        $this->fluentSchemaDTO = new FluentSchemaDTOProxy(new FluentSchemaDTO());
+        $this->fluentSchemaDTO = new FluentSchemaDTOProxy(new FluentSchemaDTO);
     }
 
     public static function make(): static
@@ -170,7 +170,7 @@ class FluentSchema implements FluentSchemaDTOAccessor
     protected function ensureSchemaStorage(): void
     {
         if (!isset($this->schemaStorage)) {
-            $this->schemaStorage = new SchemaStorage();
+            $this->schemaStorage = new SchemaStorage;
         }
     }
 
@@ -198,7 +198,7 @@ class FluentSchema implements FluentSchemaDTOAccessor
      *
      * @return Validator
      */
-    public function validate(mixed &$data, int $checkMode = null): Validator
+    public function validate(mixed &$data, ?int $checkMode = null): Validator
     {
         $this->ensureSchemaStorage();
 
@@ -217,7 +217,7 @@ class FluentSchema implements FluentSchemaDTOAccessor
      *
      * @return $this
      */
-    public function addValidationSchema(object|array $schema, string $id = null): static
+    public function addValidationSchema(object|array $schema, ?string $id = null): static
     {
         $this->ensureSchemaStorage();
 

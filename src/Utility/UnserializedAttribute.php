@@ -3,6 +3,4 @@
 namespace FluentJsonSchema\Utility;
 
 #[\Attribute]
-class UnserializedAttribute
-{
-}
+class UnserializedAttribute {}

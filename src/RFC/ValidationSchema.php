@@ -112,7 +112,7 @@ trait ValidationSchema
     public function maxLength(int $maxLength): static
     {
         if ($maxLength < 0) {
-            throw new NonNegativeIntegerException();
+            throw new NonNegativeIntegerException;
         }
 
         $this->maxLength = $maxLength;
@@ -123,7 +123,7 @@ trait ValidationSchema
     public function minLength(int $minLength): static
     {
         if ($minLength < 0) {
-            throw new NonNegativeIntegerException();
+            throw new NonNegativeIntegerException;
         }
 
         $this->minLength = $minLength;
@@ -162,7 +162,7 @@ trait ValidationSchema
     public function maxContains(int $maxContains): static
     {
         if ($maxContains < 0) {
-            throw new NonNegativeIntegerException();
+            throw new NonNegativeIntegerException;
         }
 
         $this->maxContains = $maxContains;
@@ -173,7 +173,7 @@ trait ValidationSchema
     public function minContains(int $minContains): static
     {
         if ($minContains < 0) {
-            throw new NonNegativeIntegerException();
+            throw new NonNegativeIntegerException;
         }
 
         $this->minContains = $minContains;
@@ -184,7 +184,7 @@ trait ValidationSchema
     public function maxProperties(int $maxProperties): static
     {
         if ($maxProperties < 0) {
-            throw new NonNegativeIntegerException();
+            throw new NonNegativeIntegerException;
         }
 
         $this->maxProperties = $maxProperties;
@@ -195,7 +195,7 @@ trait ValidationSchema
     public function minProperties(int $minProperties): static
     {
         if ($minProperties < 0) {
-            throw new NonNegativeIntegerException();
+            throw new NonNegativeIntegerException;
         }
 
         $this->minProperties = $minProperties;
