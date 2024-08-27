@@ -27,8 +27,8 @@ class FluentSchemaDTO
     use MetadataSchema;
     use MiscSchema;
     use UnevaluatedSchema;
-    use ValidationSchema;
     use UtilityContainer;
+    use ValidationSchema;
 
     /**
      * @var array<string, mixed>

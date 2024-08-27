@@ -81,7 +81,7 @@ class ObjectBuilder extends AbstractTypeBuilder
      */
     public function properties(array $properties): static
     {
-        foreach($properties as $name => $property) {
+        foreach ($properties as $name => $property) {
             $this->property($name, $property);
         }
 
