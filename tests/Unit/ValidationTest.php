@@ -6,7 +6,7 @@ use FluentJsonSchema\Exceptions\FluentSchemaException;
 use FluentJsonSchema\FluentSchema;
 
 test('set storage', function() {
-    $storage = new \JsonSchema\SchemaStorage();
+    $storage = new \JsonSchema\SchemaStorage;
     expect(FluentSchema::make()->setSchemaStorage($storage)->getSchemaStorage())->toBe($storage);
 });
 

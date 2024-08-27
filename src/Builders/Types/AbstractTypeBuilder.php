@@ -17,8 +17,7 @@ abstract class AbstractTypeBuilder implements FluentSchemaDTOAccessor
 
     public function __construct(
         protected FluentSchema $fluentSchema,
-    ) {
-    }
+    ) {}
 
     /**
      * Return to the FluentSchema context
